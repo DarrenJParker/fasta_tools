@@ -1,5 +1,9 @@
 # fasta_tools
 
+If you use any of the scripts in this repositoy please cite it as follows:
+
+Parker, D. J. (2016). fasta_tools. Zenodo. https://zenodo.org/record/59775
+
 NOTE: help messages can be displayed for all scripts by running them without any arguments provided (i.e. python [name of script]).
 All scripts written in python3.4 or higher.
 
