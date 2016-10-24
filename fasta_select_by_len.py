@@ -1,6 +1,7 @@
 ## fasta_select_by_len 
 
 import sys
+import os
 
 args = sys.argv
 arg_len = len(args)
@@ -31,33 +32,60 @@ else:
 	less_than = args[3]
 	out_file = args[4]
 	
-	
-	name = []
-	seq = []
+	##### FIRST unwrap fasta - precautionary will be necessary for some files 
+	### note making a temp unwrapped fasta file  - removed at end
 
-	seq_dict = {}
+	output_fasta_name = input_fasta + ".TEMP_extract_fasta_file" 
 
-	file_in = open(input_fasta)
-	for line in file_in:
+	output_file = open(output_fasta_name, "w")
+	print("\nUnwrapping fasta file")
+	count = 0
+	in_file = open(input_fasta)
+	for line in in_file:
+		count = count + 1
 		line = line.rstrip("\n")
-		if line.startswith(">"):
-			line = line.replace(">", "")
-			name.append(line)
+		if line.startswith(">") and count == 1:
+			output_file.write(line + "\n")
+		elif line.startswith(">") and count > 1:
+			output_file.write("\n" + line + "\n")
+		else: 
+			output_file.write(line)	
+
+	output_file.close()
+
+
+	### add seqs to dictionary
+	name_list = []
+	seq_list = []
+	seq_dict = {}
+	
+	done = 0
+	seq_file_1 = open(output_fasta_name)
+	for line in seq_file_1:
+		lineA = line.rstrip("\n")
+		if lineA.startswith(">"):
+			lineB = lineA.replace(">", "")
+			name_list.append(lineB)
 		else:
-			seq.append(line)
+			seq_list.append(lineA)
+			done = done + 1
+			done_divide = done / 1000
+			if done_divide.is_integer():
+				print("Read " + str(done) + " sequences from " + input_fasta)
 
-
-	for element in range(0,len(name)):
-		name1 = name[element]
-		seq1 = seq[element]
+	for element in range(0,len(name_list)):
+		name1 = name_list[element]
+		seq1 = seq_list[element]
 		seq_dict[name1] = seq1
 
-	#print(seq_dict)	
-	#print(seq_dict.get("contig_99"))
+	#print(seq_dict)
+	## tidyup
+	seq_file_1.close()
+	os.remove(output_fasta_name)
 	
 	output_file = open(out_file,"w")
 	if less_than != "min" and greater_than == "max":
-		print("\nOutputting sequences greater-than or equal to " + str(less_than))
+		print("\nOutputting sequences greater-than or equal to " + str(less_than) + "\n")
 		for el in seq_dict:
 			seq_len = len(seq_dict.get(el))
 			#print(seq_len)
@@ -66,7 +94,7 @@ else:
 				output_file.write(seq_dict.get(el) + "\n")
 						
 	elif less_than == "min" and greater_than != "max":
-		print("\nOutputting sequences less-than or equal to " + str(greater_than))
+		print("\nOutputting sequences less-than or equal to " + str(greater_than) + "\n")
 		for el in seq_dict:
 			seq_len = len(seq_dict.get(el))
 			#print(seq_len)
@@ -75,7 +103,7 @@ else:
 				output_file.write(seq_dict.get(el) + "\n")
 
 	elif less_than != "min" and greater_than != "max":
-		print("\nOutputting sequences between " + str(greater_than) + " and " + str(less_than))
+		print("\nOutputting sequences between " + str(greater_than) + " and " + str(less_than) + "\n")
 		for el in seq_dict:
 			seq_len = len(seq_dict.get(el))
 			#print(seq_len)
@@ -83,6 +111,6 @@ else:
 				output_file.write(">" + el + "\n")
 				output_file.write(seq_dict.get(el) + "\n")
 	else:
-		print("Please specify max and min values")
+		print("\nPlease specify max and min values!\n")
 
 
