@@ -15,7 +15,8 @@ Some basic scripts for commonly performed tasks on fasta files.
 * unwrap_fasta.py | unwrap a wrapped fasta file 
 * fasta_select_by_len | select seqs of specified length (less-than, greater-than, or range) 
 * fasta_len_0.2.py | calc min, min length, max length, mean length, N50, and base comp of fasta sequences 
-* fasta_len_all_seqs.py | get len of all seqs 
+* fasta_len_all_seqs.py | get len of all seqs
+* fasta_remove_duplicate_sequences.py | removes duplicate sequences from a fasta file.
 
 ##Alignments
 
