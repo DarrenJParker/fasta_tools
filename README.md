@@ -18,11 +18,8 @@ Some basic scripts for commonly performed tasks on fasta files.
 * fasta_len_all_seqs.py | get len of all seqs
 * fasta_remove_duplicate_sequences.py | removes duplicate sequences from a fasta file.
 
-##Alignments
+## Alignments
 
 * alignment_base_split.py | takes a fasta alignments as input, and outputs 3 fasta alignments each a different position (1,2,3)
 * alignment_concat.py takes a number of separate fasta file alignments as input, and concats them 
-* alignment_trimmer.py This program takes an alignment file as input It trims alignments to remove regions with gaps in two main ways it trims gaps from the ends of the alignment it trims gaps from inside the alignment iteratively, starting with the closest to the end of the alignment (greater than minimum gapsize), until no gaps larger than minimum gapsize")
-
-
-
+* [Trimming alignments](Alignment_trimming)
