@@ -17,6 +17,8 @@ Some basic scripts for commonly performed tasks on fasta files.
 * fasta_len_0.2.py | calc min, min length, max length, mean length, N50, and base comp of fasta sequences 
 * fasta_len_all_seqs.py | get len of all seqs
 * fasta_remove_duplicate_sequences.py | removes duplicate sequences from a fasta file.
+* fasta_prot_trim_stop.py | Removes stop codons from fasta files. 
+
 
 ## Alignments
 
