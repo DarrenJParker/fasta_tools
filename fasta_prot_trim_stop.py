@@ -7,7 +7,7 @@ import re
 import collections
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], 'f:s:hSR')
+	opts, args = getopt.getopt(sys.argv[1:], 'f:s:x:hSR')
 																						
 except getopt.GetoptError:
 	print('ERROR getting options, please see help by specifing -h')
@@ -24,7 +24,7 @@ in_file_name = None
 replace_internal_stop  = False
 remove_name_after_space = False
 stop_codon = "."
-
+rename_all_seqs_prefix = False
 
 #print (opts) ## see args
 for opt, arg in opts:
@@ -35,7 +35,8 @@ for opt, arg in opts:
 		print("python3 fasta_prot_trim_stop.py -f [in fasta file] [options] \n\n")
 		print("**** Options ****\n")
 		print("-s\tstop symbol. Default = '.'")		
-		print("-S\tSimple header in output - remove everything after a space in fasta header. Default: OFF")						
+		print("-S\tSimple header in output - remove everything after a space in fasta header. Default: OFF")
+		print("-X\trename all seqs with specified prefix. Default: OFF")		
 		print("-R\tRemove internal stops. Default: OFF\n\n\n")
 		
 		sys.exit(2)
@@ -45,6 +46,8 @@ for opt, arg in opts:
 		 replace_internal_stop  = True
 	elif opt in ('-S'):
 		 remove_name_after_space = True
+	elif opt in ('-x'):
+		 rename_all_seqs_prefix = arg
 	elif opt in ('-s'):
 		 stop_codon = arg
 	else:
@@ -118,9 +121,10 @@ outfile = open(in_file_name.replace(".fasta", "").replace(".fa", "") + "_aans.fa
 
 seen_names = set()
 
-
+S_N = 0
 for s in prot_seq_dict:
 	seq = prot_seq_dict.get(s)
+	S_N = S_N + 1
 	if seq.endswith(stop_codon) :
 		seq = seq.rstrip(stop_codon)
 		N_terminal_stops = N_terminal_stops + 1
@@ -143,7 +147,11 @@ for s in prot_seq_dict:
 		outfile.close()
 		os.remove(in_file_name.replace(".fasta", "").replace(".fa", "") + "_aans.fa")
 		sys.exit()
-	outfile.write(">" + s + "\n" + seq + "\n")
+	
+	if rename_all_seqs_prefix == False:
+		outfile.write(">" + s + "\n" + seq + "\n")
+	else:
+		outfile.write(">" + rename_all_seqs_prefix + str(S_N) + "\n" + seq + "\n")
 	
 	
 print("Number of seqs with stop codon aa at the end: " + str(N_terminal_stops))
@@ -151,3 +159,12 @@ print("Number of seqs with internal stop codon aa: " + str(seqs_with_internal_st
 
 
 print("\n\nFinished, John Redlantern\n\n\n")
+
+
+
+
+
+
+
+
+
